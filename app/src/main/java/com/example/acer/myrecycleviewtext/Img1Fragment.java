@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.acer.myrecycleviewtext.utils.MyTimeUtils;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.exception.WeiboException;
 import com.sina.weibo.sdk.net.RequestListener;
@@ -21,16 +20,12 @@ import com.sina.weibo.sdk.openapi.models.StatusList;
 import com.sina.weibo.sdk.utils.LogUtil;
 import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
 
 /**
  * Created by acer on 2016/1/5.
  */
-public class Img1Fragment extends Fragment implements View.OnClickListener {
+public class Img1Fragment extends Fragment implements View.OnClickListener,
+        PullLoadMoreRecyclerView.PullLoadMoreListener {
     private static final String TAG = Img1Fragment.class.getName();
 
     private PullLoadMoreRecyclerView mPullLoadMoreRecyclerView;
@@ -47,6 +42,12 @@ public class Img1Fragment extends Fragment implements View.OnClickListener {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         initView(rootView);
         mPullLoadMoreRecyclerView.setRefreshing(true);
+        mPullLoadMoreRecyclerView.setOnPullLoadMoreListener(this);//滑动监听（刷新/加载更多）
+        loadNewWeibo();//第一次打开则自动加载最新微博
+        return rootView;
+    }
+
+    private void loadNewWeibo() {
         // 获取当前已保存过的 Token
         mAccessToken = AccessTokenKeeper.readAccessToken(getActivity());
         // 对statusAPI实例化
@@ -54,19 +55,6 @@ public class Img1Fragment extends Fragment implements View.OnClickListener {
         if (mAccessToken != null && mAccessToken.isSessionValid()) {
             mStatusesAPI.friendsTimeline(0L, 0L, 10, 1, false, 0, false, mListener);//加载最新微博
         }
-        mPullLoadMoreRecyclerView.setOnPullLoadMoreListener(
-                new PullLoadMoreRecyclerView.PullLoadMoreListener() {
-                    @Override
-                    public void onRefresh() {
-                        mStatusesAPI.friendsTimeline(0L, 0L, 10, 1, false, 0, false, mListener);
-                    }
-
-                    @Override
-                    public void onLoadMore() {
-
-                    }
-                });
-        return rootView;
     }
 
     private void initView(View rootView) {
@@ -80,7 +68,7 @@ public class Img1Fragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bottombar_tv_main:
-
+                loadNewWeibo();
                 break;
         }
     }
@@ -98,43 +86,20 @@ public class Img1Fragment extends Fragment implements View.OnClickListener {
                 Log.i("json", response);
                 if (response.startsWith("{\"statuses\"")) {
                     // 调用 StatusList#parse 解析字符串成微博列表对象
-                    StatusList statuses = StatusList.parse(response);
+                    final StatusList statuses = StatusList.parse(response);
                     if (statuses != null && statuses.total_number > 0) {
-
-                        List<String> textlist = new ArrayList<>();
-                        List<Date> timelist = new ArrayList<>();
-                        List<String> namelist = new ArrayList<>();
-                        List<String> profileImageUrlList = new ArrayList<>();
-                        List<String> sourceList = new ArrayList<>();
-                        List<String> retweetedTextList = new ArrayList<>();
-                        List<ArrayList<String>> picUrlsList = new ArrayList<>();
-                        Iterator it = statuses.statusList.iterator();
-                        while (it.hasNext()) {
-                            Status list = (Status) it.next();
-                            textlist.add(list.text);//微博正文内容
-                            timelist.add(MyTimeUtils.strToDate(list.created_at));//发布时间,泛型不同所以不跟微博来源合并
-                            namelist.add(list.user.screen_name);//名字
-                            profileImageUrlList.add(list.user.profile_image_url);//头像
-                            sourceList.add(list.getTextSource());//微博来源
-                            if (list.retweeted_status != null //被转发的微博名称和内容
-                                    && list.retweeted_status.user != null) {
-                                retweetedTextList.add("@" + list.retweeted_status.user.name
-                                        + " : " + list.retweeted_status.text);
-                            } else {
-                                retweetedTextList.add("null");
-                            }
-                            if (list.retweeted_status != null) {//有转发，则添加转发的配图
-                                picUrlsList.add(list.retweeted_status.pic_urls);
-                            } else {
-                                picUrlsList.add(list.pic_urls);//没转发，则添加原创微博的配图
-                            }
-                        }
                         //绑定适配器
-                        mRecyclerViewAdapter = new RecyclerViewAdapter(getActivity(), textlist, timelist,
-                                namelist, profileImageUrlList, sourceList, retweetedTextList,
-                                picUrlsList);
+                        mRecyclerViewAdapter = new RecyclerViewAdapter(getActivity(), statuses.statusList);
                         mPullLoadMoreRecyclerView.setAdapter(mRecyclerViewAdapter);
-
+                        /*Object obj = view.getTag();
+                        if (obj!=  null){
+                            String weiboId = obj.toString();
+                            Intent intent = new Intent(getActivity(),VideoPlay.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("weiboId",weiboId);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        }*/
                     }
                 } else if (response.startsWith("{\"created_at\"")) {
                     // 调用 Status#parse 解析字符串成微博对象
@@ -155,4 +120,16 @@ public class Img1Fragment extends Fragment implements View.OnClickListener {
             Toast.makeText(getActivity(), info.toString(), Toast.LENGTH_LONG).show();
         }
     };
+
+    //下拉刷新
+    @Override
+    public void onRefresh() {
+        loadNewWeibo();
+    }
+
+    //滑到底部加载更多
+    @Override
+    public void onLoadMore() {
+
+    }
 }

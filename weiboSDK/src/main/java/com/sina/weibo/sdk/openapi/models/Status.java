@@ -155,11 +155,56 @@ public class Status {
                     status.pic_urls.add(tmpObject.optString("thumbnail_pic"));
                 }
             }
-        }else {
-            status.pic_urls.add("MyNull");
         }
-        
         //status.ad = jsonObject.optString("ad", "");
         return status;
+    }
+
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Status getRetweeted_status() {
+        return retweeted_status;
+    }
+
+    public void setRetweeted_status(Status retweeted_status) {
+        this.retweeted_status = retweeted_status;
+    }
+
+    public ArrayList<String> getPic_urls() {
+        return pic_urls;
+    }
+
+    public void setPic_urls(ArrayList<String> pic_urls) {
+        this.pic_urls = pic_urls;
     }
 }

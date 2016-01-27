@@ -82,7 +82,7 @@
         <LinearLayout
             android:id="@+id/id_layout_retweet_and_pictures"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="#f2f2f2"
             android:orientation="vertical"
             android:padding="8dp">
@@ -91,9 +91,18 @@
                 android:id="@+id/id_tv_retweeted_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="/@被转发者用户名 : 他的微博正文他的微博正文他的微博正文"
                 android:textColor="#2637ca"
                 android:textSize="16sp" />
+
+            <!--<VideoView-->
+                <!--android:id="@+id/id_videoview"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="175dp" />-->
+
+            <WebView
+                android:id="@+id/id_webview"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"/>
 
             <com.example.acer.myrecycleviewtext.MyGridView
                 android:id="@+id/id_gridview"
