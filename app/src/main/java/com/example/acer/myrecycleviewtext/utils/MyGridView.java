@@ -1,4 +1,4 @@
-package com.example.acer.myrecycleviewtext;
+package com.example.acer.myrecycleviewtext.utils;
 
 import android.content.Context;
 import android.util.AttributeSet;

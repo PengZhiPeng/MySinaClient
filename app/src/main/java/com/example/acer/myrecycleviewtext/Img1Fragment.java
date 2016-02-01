@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.acer.myrecycleviewtext.adapter.RecyclerViewAdapter;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.exception.WeiboException;
 import com.sina.weibo.sdk.net.RequestListener;
@@ -34,6 +35,7 @@ public class Img1Fragment extends Fragment implements View.OnClickListener,
     private Oauth2AccessToken mAccessToken;
     //用于获取微博信息流等操作的API
     private StatusesAPI mStatusesAPI;
+    private int mPage;
 
     @Nullable
     @Override
@@ -43,7 +45,7 @@ public class Img1Fragment extends Fragment implements View.OnClickListener,
         initView(rootView);
         mPullLoadMoreRecyclerView.setRefreshing(true);
         mPullLoadMoreRecyclerView.setOnPullLoadMoreListener(this);//滑动监听（刷新/加载更多）
-        loadNewWeibo();//第一次打开则自动加载最新微博
+        loadNewWeibo();//第一次打开则自动加载最新微博// FIXME: 2016/1/31 有可能没登陆
         return rootView;
     }
 
@@ -68,6 +70,8 @@ public class Img1Fragment extends Fragment implements View.OnClickListener,
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bottombar_tv_main:
+                mPage = 1;
+                mPullLoadMoreRecyclerView.scrollToTop();
                 loadNewWeibo();
                 break;
         }
@@ -88,9 +92,18 @@ public class Img1Fragment extends Fragment implements View.OnClickListener,
                     // 调用 StatusList#parse 解析字符串成微博列表对象
                     final StatusList statuses = StatusList.parse(response);
                     if (statuses != null && statuses.total_number > 0) {
-                        //绑定适配器
-                        mRecyclerViewAdapter = new RecyclerViewAdapter(getActivity(), statuses.statusList);
-                        mPullLoadMoreRecyclerView.setAdapter(mRecyclerViewAdapter);
+                        if (mRecyclerViewAdapter == null) {
+                            //绑定适配器
+                            mRecyclerViewAdapter = new RecyclerViewAdapter(getActivity(),
+                                    statuses.statusList);
+                            mPullLoadMoreRecyclerView.setAdapter(mRecyclerViewAdapter);
+                        } else {
+                            if (mPage == 1) {
+                                mRecyclerViewAdapter.getmDatas().clear();
+                            }
+                            mRecyclerViewAdapter.getmDatas().addAll(statuses.statusList);
+                            mRecyclerViewAdapter.notifyDataSetChanged();
+                        }
                         /*Object obj = view.getTag();
                         if (obj!=  null){
                             String weiboId = obj.toString();
@@ -124,12 +137,15 @@ public class Img1Fragment extends Fragment implements View.OnClickListener,
     //下拉刷新
     @Override
     public void onRefresh() {
+        mPage = 1;
         loadNewWeibo();
     }
 
     //滑到底部加载更多
     @Override
     public void onLoadMore() {
-
+        mPage += 1;
+        long maxId = mRecyclerViewAdapter.getMinId();
+        mStatusesAPI.friendsTimeline(0L, maxId, 10, 1, false, 0, false, mListener);
     }
 }

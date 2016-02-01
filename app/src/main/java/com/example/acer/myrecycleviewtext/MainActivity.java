@@ -27,9 +27,13 @@ public class MainActivity extends AppCompatActivity {
 
     //微博授权登陆
     private AuthInfo mAuthInfo;
-    /** 注意：SsoHandler 仅当 SDK 支持 SSO 时有效 */
+    /**
+     * 注意：SsoHandler 仅当 SDK 支持 SSO 时有效
+     */
     private SsoHandler mSsoHandler;
-    /** 封装了 "access_token"，"expires_in"，"refresh_token"，并提供了他们的管理功能  */
+    /**
+     * 封装了 "access_token"，"expires_in"，"refresh_token"，并提供了他们的管理功能
+     */
     private Oauth2AccessToken mAccessToken;
 
 
@@ -172,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
             // 从 Bundle 中解析 Token
             mAccessToken = Oauth2AccessToken.parseAccessToken(values);
             //从这里获取用户输入的 电话号码信息
-            String  phoneNum =  mAccessToken.getPhoneNum();
+            String phoneNum = mAccessToken.getPhoneNum();
             if (mAccessToken.isSessionValid()) {
                 // 显示 Token
                 updateTokenView(false);
@@ -217,14 +221,14 @@ public class MainActivity extends AppCompatActivity {
         String date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(
                 new java.util.Date(mAccessToken.getExpiresTime()));
         String format = getString(R.string.weibosdk_token_to_string_format_1);
-        Toast.makeText(MainActivity.this,
+         /*Toast.makeText(MainActivity.this,
                 String.format(format, mAccessToken.getToken(), date),
-                Toast.LENGTH_SHORT).show();
+                Toast.LENGTH_SHORT).show();*/
 
         String message = String.format(format, mAccessToken.getToken(), date);
         if (hasExisted) {
             message = getString(R.string.weibosdk_token_has_existed) + "\n" + message;
-            Toast.makeText(MainActivity.this,message,Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
         }
     }
 }

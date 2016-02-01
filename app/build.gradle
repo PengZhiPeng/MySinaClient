@@ -38,4 +38,5 @@ dependencies {
     compile 'com.android.support:cardview-v7:23.0.1'
     compile project(':weiboSDK')
     compile files('libs/universal-image-loader-1.9.5.jar')
+    compile 'com.commit451:PhotoView:1.2.4'
 }

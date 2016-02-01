@@ -3,8 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--注意！这里宽高写死了，只适应我手机屏幕-->
     <ImageView
         android:id="@+id/id_picture"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_width="109dp"
+        android:layout_height="109dp" />
 </RelativeLayout>

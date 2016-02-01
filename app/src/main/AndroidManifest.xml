@@ -35,10 +35,23 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" >
         </activity>
+        <!-- 播放视频页面 -->
         <activity
-            android:name=".VideoPlay"
+            android:name=".ui.VideoPlay"
             android:label="@string/title_activity_video_play"
             android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <!-- 显示单条微博信息页面 -->
+        <activity
+            android:name=".ui.ShowSingleWeibo"
+            android:label="@string/title_activity_show_single_weibo"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <!--微博图片浏览页面-->
+        <activity
+            android:name=".ui.ImageBrower"
+            android:label="@string/title_activity_image_brower"
+            android:theme="@style/ImageBrowerTheme" >
         </activity>
     </application>
 

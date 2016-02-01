@@ -14,4 +14,11 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="ImageBrower" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/alphain</item>
+        <item name="android:activityOpenExitAnimation">@anim/alphaout</item>
+        <item name="android:activityCloseEnterAnimation">@anim/alphain</item>
+        <item name="android:activityCloseExitAnimation">@anim/alphaout</item>
+    </style>
+
 </resources>

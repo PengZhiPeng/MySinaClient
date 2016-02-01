@@ -1,8 +1,10 @@
-package com.example.acer.myrecycleviewtext;
+package com.example.acer.myrecycleviewtext.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+
+import com.example.acer.myrecycleviewtext.R;
 
 public class VideoPlay extends AppCompatActivity {
 

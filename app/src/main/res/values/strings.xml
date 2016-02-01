@@ -10,4 +10,6 @@
     <string name="weibosdk_token_to_string_format_1">Token：%1$s \\n有效期：%2$s</string>
     <string name="weibosdk_token_has_existed">Token 仍在有效期内，无需再次登录。</string>
     <string name="title_activity_video_play">VideoPlay</string>
+    <string name="title_activity_show_single_weibo">ShowSingleWeibo</string>
+    <string name="title_activity_image_brower">ImageBrower</string>
 </resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ImageBrowerTheme" parent="AppTheme.NoActionBar">
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowAnimationStyle">@style/ImageBrower</item>
+    </style>
+</resources>
