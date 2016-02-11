@@ -29,7 +29,7 @@ public class Comment {
     /** 评论创建时间 */
     public String created_at;
     /** 评论的 ID */
-    public String id;
+    public long id;
     /** 评论的内容 */
     public String text;
     /** 评论的来源 */
@@ -44,7 +44,7 @@ public class Comment {
     public Status status;
     /** 评论来源评论，当本评论属于对另一评论的回复时返回此字段 */
     public Comment reply_comment;
-    
+
     public static Comment parse(JSONObject jsonObject) {
         if (null == jsonObject) {
             return null;
@@ -52,7 +52,7 @@ public class Comment {
 
         Comment comment = new Comment();
         comment.created_at    = jsonObject.optString("created_at");
-        comment.id            = jsonObject.optString("id");
+        comment.id            = jsonObject.optLong("id");
         comment.text          = jsonObject.optString("text");
         comment.source        = jsonObject.optString("source");
         comment.user          = User.parse(jsonObject.optJSONObject("user"));
@@ -62,5 +62,21 @@ public class Comment {
         comment.reply_comment = Comment.parse(jsonObject.optJSONObject("reply_comment"));
         
         return comment;
+    }
+
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

@@ -16,13 +16,14 @@
 
 package com.sina.weibo.sdk.openapi.models;
 
-import java.util.ArrayList;
+import android.text.TextUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.text.TextUtils;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 评论列表结构体。
@@ -33,11 +34,11 @@ import android.text.TextUtils;
 public class CommentList {
 
     /** 微博列表 */
-    public ArrayList<Comment> commentList;
+    public List<Comment> commentList;
     public String previous_cursor;
     public String next_cursor;
     public int total_number;
-    
+
     public static CommentList parse(String jsonString) {
         if (TextUtils.isEmpty(jsonString)) {
             return null;
@@ -53,7 +54,7 @@ public class CommentList {
             JSONArray jsonArray      = jsonObject.optJSONArray("comments");
             if (jsonArray != null && jsonArray.length() > 0) {
                 int length = jsonArray.length();
-                comments.commentList = new ArrayList<Comment>(length);
+                comments.commentList = new ArrayList<Comment>();
                 for (int ix = 0; ix < length; ix++) {
                     comments.commentList.add(Comment.parse(jsonArray.optJSONObject(ix)));
                 }

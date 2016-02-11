@@ -60,7 +60,7 @@ public class StatusList {
             JSONArray jsonArray = jsonObject.optJSONArray("statuses");
             if (jsonArray != null && jsonArray.length() > 0) {
                 int length = jsonArray.length();
-                statuses.statusList = new ArrayList<Status>(length);
+                statuses.statusList = new ArrayList<Status>();
                 for (int ix = 0; ix < length; ix++) {
                     statuses.statusList.add(Status.parse(jsonArray.getJSONObject(ix)));
                 }

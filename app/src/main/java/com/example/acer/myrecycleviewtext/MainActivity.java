@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.acer.myrecycleviewtext.ui.WeiboMainFragemnt;
 import com.sina.weibo.sdk.auth.AuthInfo;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
@@ -133,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             //在这里写代码：根据不同的tab显示不同的fragment，最后return null
             switch (position) {
                 case 0:
-                    return new Img1Fragment();
+                    return new WeiboMainFragemnt();
                 case 1:
                     return new Img2Fragment();
                 case 2:

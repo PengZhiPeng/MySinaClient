@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="?attr/actionBarSize"
+    android:background="#f2f2f2"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="#fdfdfd"
+        android:clickable="true"
+        app:cardElevation="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!--用户名称头像时间顶层布局-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/id_singleweibo_iv_userIcon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="8dp"
+                    android:src="@drawable/ic_com_sina_weibo_sdk_login_button_with_frame_logo_pressed" />
+                <!--微博用户名称和时间-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/id_singleweibo_tv_userID"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="用户名称XXX"
+                        android:textColor="#ff4800"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/id_singleweibo_tv_timedate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1 min ago"
+                            android:textColor="#949494"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/id_singleweibo_tv_from_source"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="From SinaWeibo"
+                            android:textColor="#949494"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/id_singleweibo_tv_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:text="微博正文内容，微博正文内容。"
+                android:textSize="16sp" />
+            <!--显示图片视频转发内容布局-->
+            <LinearLayout
+                android:id="@+id/id_singleweibo_layout_retweet_and_pictures"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#f2f2f2"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/id_singleweibo_tv_retweeted_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp" />
+
+                <com.example.acer.myrecycleviewtext.utils.MyGridView
+                    android:id="@+id/id_singleweibo_gridview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:gravity="center"
+                    android:horizontalSpacing="3dp"
+                    android:numColumns="3"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="3dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:background="#fdfdfd"
+        android:clickable="true"
+        app:cardElevation="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/id_singleweibo_tv_retweeted_numbers"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="转发 100"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/id_singleweibo_tv_comment_numbers"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="#ededed"
+                android:text="评论 100"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/id_singleweibo_tv_like_numbers"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="赞 100"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

@@ -1,16 +1,22 @@
-package com.example.acer.myrecycleviewtext;
+package com.example.acer.myrecycleviewtext.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.acer.myrecycleviewtext.AccessTokenKeeper;
+import com.example.acer.myrecycleviewtext.Constants;
+import com.example.acer.myrecycleviewtext.R;
 import com.example.acer.myrecycleviewtext.adapter.RecyclerViewAdapter;
+import com.example.acer.myrecycleviewtext.utils.MyItemClickListener;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.exception.WeiboException;
 import com.sina.weibo.sdk.net.RequestListener;
@@ -20,22 +26,22 @@ import com.sina.weibo.sdk.openapi.models.Status;
 import com.sina.weibo.sdk.openapi.models.StatusList;
 import com.sina.weibo.sdk.utils.LogUtil;
 import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
-
-
 /**
+ * 浏览微博页面（recycleview）
  * Created by acer on 2016/1/5.
  */
-public class Img1Fragment extends Fragment implements View.OnClickListener,
+// FIXME: 2016/2/10 滑至第三个fragment再滑回来时，此fragment内容不见!
+public class WeiboMainFragemnt extends Fragment implements View.OnClickListener,
         PullLoadMoreRecyclerView.PullLoadMoreListener {
-    private static final String TAG = Img1Fragment.class.getName();
-
+    private static final String TAG = WeiboMainFragemnt.class.getName();
+    private CoordinatorLayout container;
     private PullLoadMoreRecyclerView mPullLoadMoreRecyclerView;
     private RecyclerViewAdapter mRecyclerViewAdapter = null;
     //当前 Token 信息
     private Oauth2AccessToken mAccessToken;
     //用于获取微博信息流等操作的API
     private StatusesAPI mStatusesAPI;
-    private int mPage;
+    private int mPage = 1;
 
     @Nullable
     @Override
@@ -55,7 +61,7 @@ public class Img1Fragment extends Fragment implements View.OnClickListener,
         // 对statusAPI实例化
         mStatusesAPI = new StatusesAPI(getActivity(), Constants.APP_KEY, mAccessToken);
         if (mAccessToken != null && mAccessToken.isSessionValid()) {
-            mStatusesAPI.friendsTimeline(0L, 0L, 10, 1, false, 0, false, mListener);//加载最新微博
+            mStatusesAPI.friendsTimeline(0L, 0L, 10, mPage, false, 0, false, mListener);//加载最新微博
         }
     }
 
@@ -64,14 +70,15 @@ public class Img1Fragment extends Fragment implements View.OnClickListener,
         //设置线性布局
         mPullLoadMoreRecyclerView.setLinearLayout();
         rootView.findViewById(R.id.bottombar_tv_main).setOnClickListener(this);
+        container = (CoordinatorLayout) rootView.findViewById(R.id.id_container);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bottombar_tv_main:
-                mPage = 1;
                 mPullLoadMoreRecyclerView.scrollToTop();
+                mPage = 1;
                 loadNewWeibo();
                 break;
         }
@@ -87,7 +94,7 @@ public class Img1Fragment extends Fragment implements View.OnClickListener,
             mPullLoadMoreRecyclerView.setPullLoadMoreCompleted();
             if (!TextUtils.isEmpty(response)) {
                 LogUtil.i(TAG, response);
-                Log.i("json", response);
+//                Log.i("json", response);
                 if (response.startsWith("{\"statuses\"")) {
                     // 调用 StatusList#parse 解析字符串成微博列表对象
                     final StatusList statuses = StatusList.parse(response);
@@ -101,18 +108,24 @@ public class Img1Fragment extends Fragment implements View.OnClickListener,
                             if (mPage == 1) {
                                 mRecyclerViewAdapter.getmDatas().clear();
                             }
-                            mRecyclerViewAdapter.getmDatas().addAll(statuses.statusList);
-                            mRecyclerViewAdapter.notifyDataSetChanged();
+                            if (statuses.statusList!=null) {
+                                mRecyclerViewAdapter.getmDatas().addAll(statuses.statusList);
+                                mRecyclerViewAdapter.notifyDataSetChanged();
+                            }else {
+                                Snackbar.make(container, "已无更多微博", Snackbar.LENGTH_SHORT).show();
+                            }
                         }
-                        /*Object obj = view.getTag();
-                        if (obj!=  null){
-                            String weiboId = obj.toString();
-                            Intent intent = new Intent(getActivity(),VideoPlay.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putString("weiboId",weiboId);
-                            intent.putExtras(bundle);
-                            startActivity(intent);
-                        }*/
+                        mRecyclerViewAdapter.setOnItemClickListener(new MyItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int postion) {
+                                Status status = mRecyclerViewAdapter.getmDatas().get(postion);
+                                if (status != null) {
+                                    Intent intent = new Intent(getActivity(), ShowSingleWeibo.class);
+                                    ShowSingleWeibo.status = status;
+                                    startActivity(intent);
+                                }
+                            }
+                        });
                     }
                 } else if (response.startsWith("{\"created_at\"")) {
                     // 调用 Status#parse 解析字符串成微博对象
@@ -146,6 +159,7 @@ public class Img1Fragment extends Fragment implements View.OnClickListener,
     public void onLoadMore() {
         mPage += 1;
         long maxId = mRecyclerViewAdapter.getMinId();
-        mStatusesAPI.friendsTimeline(0L, maxId, 10, 1, false, 0, false, mListener);
+        mStatusesAPI.friendsTimeline(0L, maxId, 10, mPage, false, 0, false, mListener);
     }
+
 }

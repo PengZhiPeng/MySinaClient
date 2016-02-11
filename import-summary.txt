@@ -7,8 +7,7 @@ The following files were *not* copied into the new Gradle project; you
 should evaluate whether these are still needed in your project and if
 so manually move them:
 
-* WeiboSDK.iml
-* proguard-project.txt
+* pom.xml
 
 Replaced Jars with Dependencies:
 --------------------------------
@@ -27,11 +26,9 @@ Moved Files:
 Android Gradle projects use a different directory structure than ADT
 Eclipse projects. Here's how the projects were restructured:
 
-* AndroidManifest.xml => weiboSDK\src\main\AndroidManifest.xml
-* libs\weiboSDKCore_3.1.2.jar => weiboSDK\libs\weiboSDKCore_3.1.2.jar
-* lint.xml => weiboSDK\lint.xml
-* res\ => weiboSDK\src\main\res\
-* src\ => weiboSDK\src\main\java\
+* AndroidManifest.xml => viewpagerIndicator\src\main\AndroidManifest.xml
+* res\ => viewpagerIndicator\src\main\res\
+* src\ => viewpagerIndicator\src\main\java\
 
 Missing Android Support Repository:
 -----------------------------------

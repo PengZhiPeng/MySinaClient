@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="45dp"
     android:clickable="true"
-    android:layout_alignParentBottom="true"
     app:cardElevation="3dp">
 
     <LinearLayout

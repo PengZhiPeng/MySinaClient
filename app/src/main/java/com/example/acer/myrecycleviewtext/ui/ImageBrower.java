@@ -11,6 +11,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.acer.myrecycleviewtext.R;
+import com.viewpagerindicator.UnderlinePageIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,12 +47,13 @@ public class ImageBrower extends AppCompatActivity {
         int clickPosition = bundle.getInt("position");
         mpicsList = bundle.getStringArrayList("mPicsList");
 
-        mSectionsPagerAdapter = new ImagePagerAdapter(getSupportFragmentManager(),
-                mpicsList);
-
+        mSectionsPagerAdapter = new ImagePagerAdapter(getSupportFragmentManager(), mpicsList);
         mViewPager = (ViewPager) findViewById(R.id.id_imagebrower_viewpage);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(clickPosition);
+        //绑定viewpager底部线形指示器
+        UnderlinePageIndicator titleIndicator = (UnderlinePageIndicator)findViewById(R.id.id_indicator);
+        titleIndicator.setViewPager(mViewPager);
         //活动开关动画
         activityCloseAnim();
     }

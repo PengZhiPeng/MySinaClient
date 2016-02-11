@@ -39,4 +39,5 @@ dependencies {
     compile project(':weiboSDK')
     compile files('libs/universal-image-loader-1.9.5.jar')
     compile 'com.commit451:PhotoView:1.2.4'
+    compile project(':viewpagerIndicator')
 }

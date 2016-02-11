@@ -39,6 +39,8 @@
         <activity
             android:name=".ui.VideoPlay"
             android:label="@string/title_activity_video_play"
+            android:hardwareAccelerated="true"
+            android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <!-- 显示单条微博信息页面 -->

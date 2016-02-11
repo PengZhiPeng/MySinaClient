@@ -20,11 +20,11 @@ import uk.co.senab.photoview.PhotoViewAttacher;
  * （点击九宫格图片后的大图浏览页面）
  * Created by acer on 2016/1/31.
  */
+// FIXME: 2016/2/11 无法播放gif图！可用android-gif-drawable开源库实现gif播放
 public class ImageBrowerFragment extends Fragment {
 
     private static final String IMAGE_URL = "image";
     private PhotoView photoView;
-    private PhotoViewAttacher mAttacher;
     private String imageUrl;
 
     public ImageBrowerFragment() {
