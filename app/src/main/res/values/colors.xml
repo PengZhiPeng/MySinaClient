@@ -7,4 +7,6 @@
     <color name="weiboItemNormalBg">#fdfdfd</color>
     <color name="weiboItemPressedBg">#696969</color>
 
+    <color name="btnNormalColor">#ff8c12</color>
+
 </resources>

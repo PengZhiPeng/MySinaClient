@@ -108,8 +108,6 @@ public class ShowSingleWeibo extends AppCompatActivity
                             }
                         }
                     }
-                } else {
-                    Toast.makeText(ShowSingleWeibo.this, "回调方法有误", Toast.LENGTH_SHORT).show();
                 }
             }
         }

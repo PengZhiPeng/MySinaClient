@@ -26,11 +26,11 @@ import com.sina.weibo.sdk.openapi.models.Status;
 import com.sina.weibo.sdk.openapi.models.StatusList;
 import com.sina.weibo.sdk.utils.LogUtil;
 import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
+
 /**
  * 浏览微博页面（recycleview）
  * Created by acer on 2016/1/5.
  */
-// FIXME: 2016/2/10 滑至第三个fragment再滑回来时，此fragment内容不见!
 public class WeiboMainFragemnt extends Fragment implements View.OnClickListener,
         PullLoadMoreRecyclerView.PullLoadMoreListener {
     private static final String TAG = WeiboMainFragemnt.class.getName();
@@ -42,16 +42,19 @@ public class WeiboMainFragemnt extends Fragment implements View.OnClickListener,
     //用于获取微博信息流等操作的API
     private StatusesAPI mStatusesAPI;
     private int mPage = 1;
+    private View rootView;//复用rootview，使viewpager滑到第三页时此页面不销毁。
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        initView(rootView);
-        mPullLoadMoreRecyclerView.setRefreshing(true);
-        mPullLoadMoreRecyclerView.setOnPullLoadMoreListener(this);//滑动监听（刷新/加载更多）
-        loadNewWeibo();//第一次打开则自动加载最新微博// FIXME: 2016/1/31 有可能没登陆
+        if (null == rootView) {
+            rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            initView(rootView);
+            mPullLoadMoreRecyclerView.setRefreshing(true);
+            mPullLoadMoreRecyclerView.setOnPullLoadMoreListener(this);//滑动监听（刷新/加载更多）
+            loadNewWeibo();//第一次打开则自动加载最新微博// FIXME: 2016/1/31 有可能没登陆
+        }
         return rootView;
     }
 
@@ -70,6 +73,10 @@ public class WeiboMainFragemnt extends Fragment implements View.OnClickListener,
         //设置线性布局
         mPullLoadMoreRecyclerView.setLinearLayout();
         rootView.findViewById(R.id.bottombar_tv_main).setOnClickListener(this);
+        rootView.findViewById(R.id.bottombar_tv_push).setOnClickListener(this);
+        rootView.findViewById(R.id.bottombar_tv_comment).setOnClickListener(this);
+        rootView.findViewById(R.id.bottombar_tv_user).setOnClickListener(this);
+        rootView.findViewById(R.id.bottombar_tv_discover).setOnClickListener(this);
         container = (CoordinatorLayout) rootView.findViewById(R.id.id_container);
     }
 
@@ -81,20 +88,20 @@ public class WeiboMainFragemnt extends Fragment implements View.OnClickListener,
                 mPage = 1;
                 loadNewWeibo();
                 break;
+            case R.id.bottombar_tv_push:
+                Intent writeWeibo = new Intent(getActivity(), WriteWeiboActivity.class);
+                startActivity(writeWeibo);
+                break;
         }
     }
 
-    /**
-     * 微博 OpenAPI 回调接口。
-     */
+    // 微博 OpenAPI 回调接口。
     private RequestListener mListener = new RequestListener() {
         @Override
         public void onComplete(String response) {
-            //关闭加载进度圈
-            mPullLoadMoreRecyclerView.setPullLoadMoreCompleted();
+            mPullLoadMoreRecyclerView.setPullLoadMoreCompleted();//关闭加载进度圈
             if (!TextUtils.isEmpty(response)) {
                 LogUtil.i(TAG, response);
-//                Log.i("json", response);
                 if (response.startsWith("{\"statuses\"")) {
                     // 调用 StatusList#parse 解析字符串成微博列表对象
                     final StatusList statuses = StatusList.parse(response);
@@ -108,10 +115,10 @@ public class WeiboMainFragemnt extends Fragment implements View.OnClickListener,
                             if (mPage == 1) {
                                 mRecyclerViewAdapter.getmDatas().clear();
                             }
-                            if (statuses.statusList!=null) {
+                            if (statuses.statusList != null) {
                                 mRecyclerViewAdapter.getmDatas().addAll(statuses.statusList);
                                 mRecyclerViewAdapter.notifyDataSetChanged();
-                            }else {
+                            } else {
                                 Snackbar.make(container, "已无更多微博", Snackbar.LENGTH_SHORT).show();
                             }
                         }
@@ -127,14 +134,6 @@ public class WeiboMainFragemnt extends Fragment implements View.OnClickListener,
                             }
                         });
                     }
-                } else if (response.startsWith("{\"created_at\"")) {
-                    // 调用 Status#parse 解析字符串成微博对象
-                    Status status = Status.parse(response);
-                    Toast.makeText(getActivity(),
-                            "发送一送微博成功, id = " + status.id,
-                            Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getActivity(), response, Toast.LENGTH_LONG).show();
                 }
             }
         }
@@ -162,4 +161,10 @@ public class WeiboMainFragemnt extends Fragment implements View.OnClickListener,
         mStatusesAPI.friendsTimeline(0L, maxId, 10, mPage, false, 0, false, mListener);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (null != rootView)
+            ((ViewGroup) rootView.getParent()).removeView(rootView);
+    }
 }

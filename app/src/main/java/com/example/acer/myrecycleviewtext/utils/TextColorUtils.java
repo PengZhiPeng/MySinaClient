@@ -34,8 +34,8 @@ public class TextColorUtils {
         final String TOPIC = "#.+?#";
         //@某人          @( [中文 大小写英文 数字 下划线_ 横杠-] 0个或多个 )
         final String NAMEH = "@([\u4e00-\u9fa5A-Za-z0-9_\\-]*)";
-        //网址             [大小写英文] :// [非中文或空格或标点] 0个或多个
-        final String URLH = "[a-zA-Z]+://[^\u4e00-\u9fa5\\s，。？：；‘’！“”—……、]*";
+        //网址             [大小写英文] :// [非空格或中文或标点] 0个或多个
+        final String URLH = "[a-zA-Z]+://[^\\s\u4e00-\u9fa5，。？：；‘’！“”—……、（）]*";
         SpannableString spannableString = new SpannableString(weiboText);
 
         heightLight(mContext, weiboText, TOPIC, spannableString, TYPE_TOPIC);
