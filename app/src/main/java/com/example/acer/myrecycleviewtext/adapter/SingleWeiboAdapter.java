@@ -17,6 +17,7 @@ import com.example.acer.myrecycleviewtext.utils.TextColorUtils;
 import com.example.acer.myrecycleviewtext.utils.TextViewFixTouchConsume;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.sina.weibo.sdk.openapi.models.Comment;
 import com.sina.weibo.sdk.openapi.models.Status;
 
@@ -96,6 +97,7 @@ public class SingleWeiboAdapter extends RecyclerView.Adapter<SingleWeiboAdapter.
             //显示头像图片的配置
             DisplayImageOptions options = new DisplayImageOptions.Builder()
                     .bitmapConfig(Bitmap.Config.RGB_565)
+                    .displayer(new RoundedBitmapDisplayer(100))
                     .build();
             ImageLoader.getInstance().displayImage(mStatus.getUser().getProfile_image_url(),
                     holder.profileImage, options);
@@ -146,6 +148,7 @@ public class SingleWeiboAdapter extends RecyclerView.Adapter<SingleWeiboAdapter.
                 //显示评论头像图片的配置
                 DisplayImageOptions options = new DisplayImageOptions.Builder()
                         .bitmapConfig(Bitmap.Config.RGB_565)
+                        .displayer(new RoundedBitmapDisplayer(100))
                         .build();
                 ImageLoader.getInstance().displayImage(mCommentsList.get(pos).getUser().getProfile_image_url(),
                         holder.comment_profileImage, options);

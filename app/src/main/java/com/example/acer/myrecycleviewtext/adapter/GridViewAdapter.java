@@ -65,7 +65,7 @@ public class GridViewAdapter extends BaseAdapter {
                     .cacheOnDisk(true)
                     .bitmapConfig(Bitmap.Config.RGB_565)
                     .build();
-            //加载微博配图// FIXME: 2016/2/10 缩略图不要缩放，直接铺满整个格子，格子才不会有大有小
+            //加载微博配图
             ImageLoader.getInstance().displayImage(mPicsList.get(position),
                     holder.holder_pics, options);
             holder.holder_pics.setOnClickListener(new View.OnClickListener() {

@@ -18,6 +18,7 @@ import com.example.acer.myrecycleviewtext.utils.TextColorUtils;
 import com.example.acer.myrecycleviewtext.utils.TextViewFixTouchConsume;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.sina.weibo.sdk.openapi.models.Status;
 
 import java.util.Date;
@@ -82,6 +83,7 @@ public class RecyclerViewAdapter
         //显示头像图片的配置
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .bitmapConfig(Bitmap.Config.RGB_565)
+                .displayer(new RoundedBitmapDisplayer(100))
                 .build();
         ImageLoader.getInstance().displayImage(mStatusList.get(position).getUser().getProfile_image_url(),
                 holder.holder_profile_image, options);

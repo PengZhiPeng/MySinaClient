@@ -5,7 +5,7 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="weiboItemNormalBg">#fdfdfd</color>
-    <color name="weiboItemPressedBg">#696969</color>
+    <color name="weiboItemPressedBg">#bfbfbf</color>
 
     <color name="btnNormalColor">#ff8c12</color>
 

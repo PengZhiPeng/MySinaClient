@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return getString(R.string.sina_weibo);//微博页面
+                    return getString(R.string.main_weibo);//微博页面
                 case 1:
                     return "SECTION 2";
                 case 2:
